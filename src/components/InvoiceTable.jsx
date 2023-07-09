@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-const InvoiceTable = ({ invoices, updateInvoice }) => {
+const InvoiceTable = ({ invoices, updateInvoice, handleDelete }) => {
   const [editedData, setEditedData] = useState({
     index: null,
     editData: {},
@@ -18,7 +18,7 @@ const InvoiceTable = ({ invoices, updateInvoice }) => {
       ...editedData,
       editData: {
         ...editedData.editData,
-        [name]: parseInt(value),
+        [name]: value,
       },
     });
   };
@@ -65,16 +65,16 @@ const InvoiceTable = ({ invoices, updateInvoice }) => {
   ]);
   return (
     <>
-      <div className="overflow-x-auto flex">
-        <div className="min-w-screen min-h-screen  flex mx-auto font-sans">
+      <div className="overflow-x-auto flex py-8">
+        <div className="min-w-screen  flex mx-auto font-sans bg-white shadow-lg">
           <div className="w-full lg:w-5/6">
-            <div className="bg-white rounded my-6">
+            <div className="bg-white rounded m-6">
               <table className="min-w-max w-full table-auto">
                 <thead>
                   <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                     <th className="py-3 px-6 text-left w-52">Quantity</th>
                     <th className="py-3 px-6 text-left w-52">Price</th>
-                    <th className="py-3 px-6 text-left w-52">Discount%</th>
+                    <th className="py-3 px-6 text-left w-52">Discount %</th>
                     <th className="py-3 px-6 text-left w-52">Discount</th>
                     <th className="py-3 px-6 text-left w-52">Tax %</th>
                     <th className="py-3 px-6 text-left w-52">Tax</th>
@@ -85,7 +85,7 @@ const InvoiceTable = ({ invoices, updateInvoice }) => {
                 <tbody className="text-gray-600 text-sm font-light bg-white w-full">
                   {invoices.map((invoice, index) => (
                     <tr
-                      className=" text-gray-600 uppercase text-sm leading-normal bg-white w-full"
+                      className=" text-gray-600 uppercase text-sm leading-normal bg-white w-full border"
                       key={index}
                     >
                       <th className="py-3 px-6 text-left">
@@ -161,24 +161,32 @@ const InvoiceTable = ({ invoices, updateInvoice }) => {
                           <>
                             <button
                               onClick={handleSave}
-                              className="mr-2 px-3 py-1 bg-green-500 text-white rounded"
+                              className="mr-2 px-3 py-1 bg-green-500 text-white rounded w-16"
                             >
                               Save
                             </button>
                             <button
                               onClick={handleCancel}
-                              className="px-3 py-1 bg-red-500 text-white rounded"
+                              className="px-3 py-1 bg-yellow-500 text-white rounded"
                             >
                               Cancel
                             </button>
                           </>
                         ) : (
-                          <button
-                            onClick={() => handleEdit(index, invoice)}
-                            className="px-3 py-1 bg-blue-500 text-white rounded"
-                          >
-                            Edit
-                          </button>
+                          <>
+                            <button
+                              onClick={() => handleEdit(index, invoice)}
+                              className="mr-2 px-3 py-1 bg-blue-500 text-white rounded w-16"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(index)}
+                              className="px-3 py-1 bg-red-500 text-white rounded"
+                            >
+                              Delete
+                            </button>
+                          </>
                         )}
                       </th>
                     </tr>

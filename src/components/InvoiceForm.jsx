@@ -14,10 +14,10 @@ const InvoiceForm = ({ formData, handleChange, handleSubmit }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-sm mx-auto mt-4"
+      className="max-w-lg mx-auto mt-4 bg-white border shadow-lg p-8 "
       method="POST"
     >
-      <div className="mb-4">
+      <div className="mb-4 ">
         <label className="block text-gray-700 text-sm font-bold mb-2">
           Qty
         </label>

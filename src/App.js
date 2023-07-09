@@ -23,8 +23,17 @@ const App = () => {
         parseInt(e.target.value) > 100) ||
       (e.target.name === "taxPercentage" && parseInt(e.target.value) > 100)
     ) {
-      alert(`Can't be ${e.target.name} value greater than 100%`);
-      setFormData({ ...formData, [e.target.name]: 100 });
+      alert(
+        `Can't be ${
+          e.target.name == "taxPercentage" ? "Tax %" : "Discount %"
+        } value greater than 100%`
+      );
+      setFormData({
+        ...formData,
+        [e.target.name]: parseInt(
+          e.target.value.toString().substring(0, e?.target?.value?.length - 1)
+        ),
+      });
     } else {
       setFormData({
         ...formData,
@@ -63,6 +72,12 @@ const App = () => {
     localStorage.setItem("invoiceData", JSON.stringify(newdata));
   };
 
+  const handleDelete = (index) => {
+    const newdata = invoiceData.filter((obj, i) => i !== index);
+    setInvoiceData(newdata);
+    localStorage.setItem("invoiceData", JSON.stringify(newdata));
+  };
+
   useMemo(() => {
     const { qty, price, discountPercentage, taxPercentage } = formData;
     let totaltax = taxPercentage
@@ -87,13 +102,18 @@ const App = () => {
 
   return (
     <div>
+      <p className="text-center text-lg uppercase font-bold py-4 bg-blue-200">React Invoice App</p>
       <InvoiceForm
         formData={formData}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
       />
       {invoiceData.length ? (
-        <InvoiceTable invoices={invoiceData} updateInvoice={updateInvoice} />
+        <InvoiceTable
+          invoices={invoiceData}
+          updateInvoice={updateInvoice}
+          handleDelete={handleDelete}
+        />
       ) : (
         ""
       )}
