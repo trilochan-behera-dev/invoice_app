@@ -1,27 +1,47 @@
 import { useMemo, useState } from "react";
 
-const InvoiceTable = ({ invoices, updateInvoice, handleDelete }) => {
+const InvoiceTable = ({ invoices, updateInvoice, deleteInvoice }) => {
+
+  /// State used for storing the edit data
   const [editedData, setEditedData] = useState({
     index: null,
     editData: {},
   });
 
+  /// function used for edit data
   const handleEdit = (index, invoice) => {
     setEditedData({
       index: index,
       editData: invoice,
     });
   };
+
+  /// function used for update the state value on input chnage
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let targetValue = value;
+    if (
+      ["discountPercentage", "taxPercentage"].includes(name) &&
+      parseInt(value) > 100
+    ) {
+      alert(
+        `Can't be ${
+          name == "taxPercentage" ? "Tax %" : "Discount %"
+        } value greater than 100%`
+      );
+      targetValue = parseInt(value.toString().substring(0, value?.length - 1));
+    }
+
     setEditedData({
       ...editedData,
       editData: {
         ...editedData.editData,
-        [name]: value,
+        [name]: targetValue,
       },
     });
   };
+
+  /// handle save call on click on save button
   const handleSave = () => {
     updateInvoice(editedData);
     setEditedData({
@@ -29,6 +49,8 @@ const InvoiceTable = ({ invoices, updateInvoice, handleDelete }) => {
       editData: {},
     });
   };
+
+  /// function call on cancle the edit process
   const handleCancel = () => {
     setEditedData({
       index: null,
@@ -181,7 +203,7 @@ const InvoiceTable = ({ invoices, updateInvoice, handleDelete }) => {
                               Edit
                             </button>
                             <button
-                              onClick={() => handleDelete(index)}
+                              onClick={() => deleteInvoice(index)}
                               className="px-3 py-1 bg-red-500 text-white rounded"
                             >
                               Delete

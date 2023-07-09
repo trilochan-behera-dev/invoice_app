@@ -104,7 +104,7 @@ const InvoiceForm = ({ formData, handleChange, handleSubmit }) => {
         <input
           type="number"
           name="totalPrice"
-          value={totalPrice}
+          value={totalPrice || ""}
           placeholder="Total Price"
           className="w-full px-3 py-2 border rounded"
           disabled
